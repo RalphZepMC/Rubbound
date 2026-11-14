@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="Bounce back"
+config/name="Rubbound"
 run/main_scene="uid://bn6vt48qj5o24"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"

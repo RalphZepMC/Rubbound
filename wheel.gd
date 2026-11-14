@@ -7,9 +7,10 @@ const JUMP_SPEED = 420.0
 const DIVE_GRAVITY_MULTIPLIER = 2.0
 const REBOUND_MULTIPLIER = 0.8
 const MAX_REBOUNDS = 3
-const SLOPE_ACCELERATION = 2500.0
+const SLOPE_ACCELERATION = 750.0
 const WHEEL_RADIUS = 20.0
 @onready var wheel_sprite: Sprite2D = $Sprite2D
+var rebound_launch_pending := false
 
 var dive_armed := false
 var rebound_count := 0
@@ -17,12 +18,10 @@ var rebound_count := 0
 
 func _physics_process(delta: float) -> void:
 	var direction := Input.get_axis("ui_left", "ui_right")
-	velocity.x = move_toward(
-		velocity.x, direction * MAX_SPEED, ACCELERATION * delta
-	)
 
 	var jump_pressed := Input.is_action_just_pressed("ui_accept")
-	var grounded := is_on_floor() and velocity.y >= 0.0
+	var grounded := is_on_floor() and not rebound_launch_pending
+	rebound_launch_pending = false
 	var slope_x := 0.0
 
 	if grounded:
@@ -46,6 +45,10 @@ func _physics_process(delta: float) -> void:
 		if dive_armed and velocity.y >= 0.0:
 			gravity *= DIVE_GRAVITY_MULTIPLIER
 		velocity.y += gravity * delta
+	# Follow the current slope unless we just pressed jump.
+	if grounded and not jump_pressed:
+		var floor_normal := get_floor_normal()
+		velocity.y = -velocity.x * floor_normal.x / floor_normal.y
 
 	var impact_speed := velocity.y
 	move_and_slide()
@@ -58,9 +61,13 @@ func _physics_process(delta: float) -> void:
 	if is_on_floor():
 		if dive_armed and impact_speed > 0.0:
 			velocity.y = -impact_speed * REBOUND_MULTIPLIER
+			rebound_launch_pending = true
 			rebound_count += 1
 		else:
 			rebound_count = 0
+
+		dive_armed = false
+		_update_rebound_label()
 
 		dive_armed = false
 		_update_rebound_label()
@@ -68,6 +75,6 @@ func _ready() -> void:
 	_update_rebound_label()
 
 func _update_rebound_label() -> void:
-	var filled := "■".repeat(rebound_count)
-	var empty := "☐".repeat(MAX_REBOUNDS - rebound_count)
-	rebound_label.text = "Rebounds: " + filled + empty
+	var filled := "☐".repeat(rebound_count)
+	var empty := "■".repeat(MAX_REBOUNDS - rebound_count)
+	rebound_label.text = "Rebounds: " + empty + filled
