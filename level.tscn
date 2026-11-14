@@ -1,0 +1,55 @@
+[gd_scene format=3 uid="uid://bn6vt48qj5o24"]
+
+[ext_resource type="Script" uid="uid://bjvvwhunmuv35" path="res://wheel.gd" id="1_u52ul"]
+[ext_resource type="Texture2D" uid="uid://b225sudsktvjo" path="res://Assets/Textures/ball_sprite.svg" id="2_oi3di"]
+[ext_resource type="Script" uid="uid://6dp4n1vt35q1" path="res://level_camera.gd" id="2_vonw3"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_473kn"]
+radius = 20.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_473kn"]
+size = Vector2(700, 40)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_473kn"]
+a = Vector2(412, 480)
+b = Vector2(948, 68)
+
+[node name="level" type="Node2D" unique_id=677905255]
+
+[node name="Wheel" type="CharacterBody2D" parent="." unique_id=1195650698 node_paths=PackedStringArray("rebound_label")]
+position = Vector2(160, 260)
+floor_snap_length = 8.0
+script = ExtResource("1_u52ul")
+rebound_label = NodePath("../HUD/ReboundLabel")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Wheel" unique_id=1691244615]
+shape = SubResource("CircleShape2D_473kn")
+
+[node name="Sprite2D" type="Sprite2D" parent="Wheel" unique_id=52698435]
+position = Vector2(0.6666565, -0.5)
+scale = Vector2(0.16875017, 0.16875008)
+texture = ExtResource("2_oi3di")
+
+[node name="Floor" type="StaticBody2D" parent="." unique_id=114330986]
+position = Vector2(350, 400)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor" unique_id=196617156]
+shape = SubResource("RectangleShape2D_473kn")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1372471114 node_paths=PackedStringArray("wheel")]
+offset = Vector2(-500, 0)
+anchor_mode = 0
+script = ExtResource("2_vonw3")
+wheel = NodePath("../Wheel")
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=1913746706]
+
+[node name="ReboundLabel" type="Label" parent="HUD" unique_id=1770258479]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Rebounds: ☐☐☐"
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=844183296]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1484207166]
+shape = SubResource("SegmentShape2D_473kn")
