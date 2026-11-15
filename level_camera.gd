@@ -5,3 +5,4 @@ extends Camera2D
 
 func _process(_delta: float) -> void:
 	global_position.x = wheel.global_position.x + look_ahead
+	global_position.y = wheel.global_position.y - 350

@@ -1,0 +1,46 @@
+[gd_scene format=3 uid="uid://radqp3dkvv7y"]
+
+[ext_resource type="Script" uid="uid://dkamlyo6j6n8q" path="res://main_menu.gd" id="1_7vrkn"]
+[ext_resource type="Texture2D" uid="uid://dqh66eigl873c" path="res://Assets/Textures/Rubbound bubbly monochrome wordmark.png" id="2_fu7sn"]
+
+[node name="MainMenu" type="Control" unique_id=1619767049]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_7vrkn")
+first_level = "uid://bn6vt48qj5o24"
+
+[node name="Background" type="ColorRect" parent="." unique_id=947393135]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.2, 0.9254902, 1, 1)
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=691608976]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MenuContent" type="VBoxContainer" parent="CenterContainer" unique_id=1738264198]
+layout_mode = 2
+
+[node name="Logo" type="TextureRect" parent="CenterContainer/MenuContent" unique_id=2004604188]
+custom_minimum_size = Vector2(400, 180)
+custom_maximum_size = Vector2(1000, 300)
+layout_mode = 2
+texture = ExtResource("2_fu7sn")
+stretch_mode = 5
+
+[node name="StartPrompt" type="Label" parent="CenterContainer/MenuContent" unique_id=1095009762]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Press any button to start"

@@ -72,9 +72,14 @@ func _physics_process(delta: float) -> void:
 		dive_armed = false
 		_update_rebound_label()
 func _ready() -> void:
+	add_to_group("player")
 	_update_rebound_label()
 
 func _update_rebound_label() -> void:
 	var filled := "☐".repeat(rebound_count)
 	var empty := "■".repeat(MAX_REBOUNDS - rebound_count)
 	rebound_label.text = "Rebounds: " + empty + filled
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("restart_level"):
+		get_viewport().set_input_as_handled()
+		get_tree().reload_current_scene.call_deferred()
